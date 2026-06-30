@@ -1,0 +1,65 @@
+/* ==========================================================================
+   RESPONSIVE.CSS — Breakpoint refinements
+   ========================================================================== */
+
+/* ----- Large desktop ----- */
+@media (min-width:1400px){
+  .container{max-width:1280px;}
+}
+
+/* ----- Tablets / small laptops ----- */
+@media (max-width:1199px){
+  .hero h1{font-size:clamp(2.3rem,5vw,3.4rem);}
+  .hero-card-photo img{height:480px;}
+  .float-card.fc1{left:-6%;}
+  .float-card.fc2{right:-6%;}
+  .process-line{display:none;}
+}
+
+@media (max-width:991px){
+  .nav-links{display:none;}
+  .header-cta .btn-call-text{display:none;}
+  .hero{padding-top:120px;text-align:center;}
+  .hero-stats-row{justify-content:center;}
+  .hero p.lead-sub{margin-left:auto;margin-right:auto;}
+  .hero-visual{margin-top:60px;}
+  .float-card{position:relative;display:inline-flex;margin:10px 8px 0;}
+  .float-card.fc1,.float-card.fc2{top:auto;left:auto;right:auto;bottom:auto;}
+  .about-photo-grid .p2{position:relative;bottom:auto;right:auto;margin-top:-60px;margin-left:auto;}
+  .section-pad{padding:64px 0;}
+  .cta-band{padding:60px 26px;border-radius:26px;}
+  .timeline-v{padding-left:34px;}
+}
+
+@media (max-width:767px){
+  .hero{min-height:auto;padding-bottom:40px;}
+  .hero h1{font-size:2.4rem;}
+  .hero p.lead-sub{font-size:1.02rem;}
+  .stat-item .num{font-size:2.2rem;}
+  .video-section img{height:300px;}
+  .video-play-btn{width:70px;height:70px;font-size:1.2rem;}
+  .process-wrap .row > div{margin-bottom:34px;}
+  .service-detail-card{padding:28px;}
+  .contact-form-wrap{padding:28px;}
+  .footer-brand-name{font-size:1.4rem;}
+  .page-hero{padding:140px 0 60px;}
+  .btn-block-mobile-stack{flex-direction:column;}
+  .btn-block-mobile-stack .btn{width:100%;justify-content:center;}
+  .hero-card-photo img{height:380px;}
+}
+
+@media (max-width:480px){
+  .eyebrow{font-size:.68rem;}
+  .section-title{font-size:1.7rem;}
+  .brand-name{font-size:1.2rem;}
+  .brand .mark{width:34px;height:34px;}
+  .stats-strip{padding:40px 0;}
+  .feature-card{padding:28px 22px;}
+  .profile-photo{height:260px;}
+}
+
+/* ----- Touch friendly tap targets ----- */
+@media (hover:none){
+  .btn{padding:16px 30px;}
+  .nav-links a{padding:10px 0;}
+}
