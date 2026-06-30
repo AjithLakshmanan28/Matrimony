@@ -12,15 +12,23 @@ function buildWhatsAppLink(message){
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
 }
 
-/* Apply WhatsApp href to every element carrying [data-wa-msg] or default class */
+/* Apply WhatsApp href to every element carrying [data-wa-msg] or default class
+   Defensive: only ever touches elements explicitly marked with .js-whatsapp,
+   and skips anything that already points to a real internal page (safety net). */
 function wireWhatsAppButtons(){
-  document.querySelectorAll(".js-whatsapp").forEach(el=>{
+  document.querySelectorAll("a.js-whatsapp").forEach(el=>{
+    const existingHref = el.getAttribute("href") || "";
+    const looksInternal = /\.html(#.*)?$/i.test(existingHref) || existingHref.startsWith("/");
+    if(looksInternal) return; // never overwrite a real page link
     const msg = el.getAttribute("data-wa-msg");
     el.setAttribute("href", buildWhatsAppLink(msg));
     el.setAttribute("target","_blank");
     el.setAttribute("rel","noopener");
   });
-  document.querySelectorAll(".js-call").forEach(el=>{
+  document.querySelectorAll("a.js-call").forEach(el=>{
+    const existingHref = el.getAttribute("href") || "";
+    const looksInternal = /\.html(#.*)?$/i.test(existingHref) || existingHref.startsWith("/");
+    if(looksInternal) return;
     el.setAttribute("href", `tel:${CALL_NUMBER}`);
   });
 }
@@ -43,9 +51,26 @@ function initMobileNav(){
   const closeBtn = document.querySelector(".js-close-mobile-nav");
   const nav = document.querySelector(".mobile-nav");
   if(!openBtn || !nav) return;
-  openBtn.addEventListener("click", ()=>nav.classList.add("open"));
-  closeBtn?.addEventListener("click", ()=>nav.classList.remove("open"));
-  nav.querySelectorAll("a").forEach(a=>a.addEventListener("click", ()=>nav.classList.remove("open")));
+
+  const openNav = (e)=>{ e.preventDefault(); nav.classList.add("open"); };
+  const closeNav = (e)=>{ e?.preventDefault(); nav.classList.remove("open"); };
+
+  openBtn.addEventListener("click", openNav);
+  closeBtn?.addEventListener("click", closeNav);
+
+  // Clicking a real nav link inside the overlay: let the browser navigate,
+  // just visually close the overlay first — don't block or rewrite the href.
+  nav.querySelectorAll("a").forEach(a=>{
+    a.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      nav.classList.remove("open");
+    });
+  });
+
+  // Safety net: Escape key always closes it.
+  document.addEventListener("keydown", (e)=>{
+    if(e.key === "Escape") closeNav();
+  });
 }
 
 /* ---------- Scroll to top button ---------- */
